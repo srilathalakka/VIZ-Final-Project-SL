@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+     <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- D3 tip CSS -->
+    <link rel="stylesheet" href="css/d3-tip.css">
+
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/Overall.css">
+		<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type = "text/javascript">
+	
+//Loading all the chart Libraries
+google.charts.load('current' ,{'packages' : ['corechart']});
+google.charts.load('current', {'packages':['treemap']});
+google.charts.load("current", {packages: ['annotationchart']});
+google.charts.load('current', { 'packages': ['map'] });
+google.charts.load('current', {packages: ['table']});
+google.charts.setOnLoadCallback(DrawingSheets);
+	
+	
+//Function where in all the responseHandlers are declared
+//A 'Response Handler' is the closure that is executed to parse the HTTP response that is returned from the server.	
+	
+	
+	function DrawingSheets() {
+	
+	drawSheetName('2018','SELECT A,BK',
+	                 HomelessTotalResponseHandler);		   //Response Handler to get Homeless
+	
+	drawSheetName('Youth Summary','SELECT A,B,C,D,E,F,G',
+	                 YHomelessTotalResponseHandler);		   //Response Handler to get Homeless YOUTH
+	
+	drawSheetName('Youth Summary','SELECT A,B,C,D,E,F,G',     
+                                AgeResponseHandler);        //Response Handler to get the Death toll by Age
+	
+	drawSheetName('Youth Summary','SELECT A,B,C,D,E,F,G',
+                                AgeYouthResponseHandler);
+	  
+}
+
+
+//Making use of the google API that is the google docs, linking the sheet to access the data
+function drawSheetName(sheetName, query, responseHandler) {
+	var queryString = encodeURIComponent(query);
+	var query = new google.visualization.Query(
+          
+ 		//  'https://docs.google.com/spreadsheets/d/1K3wXRgqvOOe31MgF4Yl-6Y5OAwKDEaTKwTX5bM44Dj4/gviz/tq?sheet=' 
+		'https://docs.google.com/spreadsheets/d/15w9a7QdynLH7--3xbFuYr8XUUOaLOyqDGPjbQfmRWAg/gviz/tq?sheet='
+				   + sheetName + '&headers=1&tq=' + queryString);
+	       query.send(responseHandler);
+	}
+
+
+//Defining the Response Handler for Total bed cunts in the year 2017	
+function HomelessTotalResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:1, desc:true});
+
+
+		var options = {
+          region: 'US', // USA
+		  resolution: 'provinces',
+          colorAxis: {colors: ['#fff7bc','#fec44f','#d95f0e']},
+          datalessRegionColor: '#f8bbd0',
+          defaultColor: '#f5f5f5'
+		  };
+		 //Making Use of the Geo Map 
+        var chart = new google.visualization.GeoChart(
+		document.getElementById('Homelesscount2018_div'));
+		chart.draw(data, options);
+		
+	}
+
+//Defining the Response handler for DEATHS based on GENDER from 1999 to 2016
+function YHomelessTotalResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:6, desc:true});  
+
+var options = {
+				height: 400,
+				bars: 'horizontal',
+				colors:['#edf8b1','#2c7fb8','#fed84f','#d95f0e','#120cc9','#c004e5'],
+				isStacked: true,
+				annotations: {alwaysOutside: true},
+				title: 'Deaths from 1999 to 2015 based on gender.',
+				hAxis: {title: 'Deaths'},
+				vAxis: {title: 'Year'}
+			};			
+		
+//Making use of a stacked Bar Chart			
+        var chart = new google.visualization.BarChart(
+		document.getElementById('youthHM_div')); //Creating an object
+		chart.draw(data, options);
+	}
+
+//Defining the Response handler for youth homeless based on Age from 2007 to 2018
+function AgeResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:6, desc:false});
+
+var options = {
+				height: 400,
+				//legend: 'none',
+				bars: 'horizontal',
+				colors:['#756bb1','#fdae6b','#fec44f','#fa9fb5','#c51b8a','#2c7fb8'], //Specifying the range of colors
+				isStacked: true,
+				annotations: {alwaysOutside: true},
+				title: 'Youth homeless categorized by Age',
+				hAxis: {title: 'Year'},
+				vAxis: {title: 'Homeless Count'}
+			};
+			
+        var chart = new google.visualization.ColumnChart(
+		document.getElementById('Age_div'));
+		chart.draw(data, options);
+	}
+	
+//Defining the Response handler for Youth homeless based on Age from 2007 to 2018 using a Combo chart to check for increase or decrease in homeless for a more clearer picture	
+function AgeYouthResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:6, desc:false});
+
+var options = {
+				height: 400,
+				bars: 'horizontal',
+				colors:['#756bb1','#fdae6b','#fec44f','#fa9fb5','#c51b8a','#2c7fb8'],
+				isStacked: true,
+				annotations: {alwaysOutside: true},
+				title: 'Homeless count categorized by Age. Most count is in Homeless Unaccompanied Youth (Under 25)',
+				hAxis: {title: 'Year'},
+				vAxis: {title: 'Homeless Count'}
+			};
+		var chart = new google.visualization.ComboChart(
+		document.getElementById('AgeYouth_div')); //Passing the object
+		chart.draw(data, options);
+    }
+	
+	
+	</script>
+	</head>
+
+<body>
+      <div id="header">
+         <div id="logo">
+            <div id="logo_text">
+             <h1>Analysis of Youth</br>Homelessness</h1>
+            </div> <!-- logo_text -->
+         </div><!-- logo -->
+        <div id="menubar">
+            <ul id="menu">
+			   <li><a href="index.html">Home</a></li>
+			   <li class="selected"><a href="Homeless Youth.html">Homeless Youth</a></li>
+               <li><a href="Chronically Homeless.html">Chronically Homeless</a></li>
+               <li><a href="Homeless Veterans.html">Homeless Veterans</a></li>
+               
+            </ul><!-- menu -->
+         </div><!-- menubar -->
+      </div><!-- header -->
+	  
+	      </p>&nbsp;</p>
+    </p>&nbsp;</p>
+
+    <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+                  <h3>Youth Homeless in United States</h3>
+                  Despite being one of the wealthiest nations in the world, the United States still struggles with high levels of poverty, especially among children and youth. In extreme cases, poverty, as well as an assortment of other factors, can lead to homelessness. While estimates vary, it is believed that from 1.7 to 1.9 million youth and children in the United States experienced at least one night of homelessness last year.</a>
+               </div>
+            </div>
+        </div>
+        </p>
+
+<h2> <center> Homelessness by state for the year 2018 </center>  </h2>
+
+
+<center><div id="Homelesscount2018_div" style="width: 900px; height: 500px"></div></center>
+
+<br></br>
+
+<h2> <center> Total number of youth homelessness categorized based on age group </center></h2>
+<table><tr>
+<td><div id="Age_div" style="width: 900px; height: 500px"></div></td>
+<td><div id="AgeYouth_div" style="width: 900px; height: 500px"></div></td>
+</tr></table>
+
+<!-- External JS libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/d3-tip.js"></script>
+<!-- Custom JS -->
+<script src="js/main.js"></script>
+
+</body>
+</html>

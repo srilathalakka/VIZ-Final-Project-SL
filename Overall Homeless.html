@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+     <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- D3 tip CSS -->
+    <link rel="stylesheet" href="css/d3-tip.css">
+
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/Overall.css">
+		<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type = "text/javascript">
+	
+//Loading all the chart Libraries
+google.charts.load('current' ,{'packages' : ['corechart']});
+google.charts.load('current', {'packages':['treemap']});
+google.charts.load("current", {packages: ['annotationchart']});
+google.charts.load('current', { 'packages': ['map'] });
+google.charts.load('current', {packages: ['table']});
+google.charts.setOnLoadCallback(DrawingSheets);
+	
+	
+//Function where in all the responseHandlers are declared
+//A 'Response Handler' is the closure that is executed to parse the HTTP response that is returned from the server.	
+	
+	
+	function DrawingSheets() {
+	
+	drawSheetName('2018','SELECT A,C',
+	                 HomelessTotalResponseHandler);		   //Response Handler to get Homeless
+	  
+}
+
+
+//Making use of the google API that is the google docs, linking the sheet to access the data
+function drawSheetName(sheetName, query, responseHandler) {
+	var queryString = encodeURIComponent(query);
+	var query = new google.visualization.Query(
+          
+ 		  'https://docs.google.com/spreadsheets/d/1K3wXRgqvOOe31MgF4Yl-6Y5OAwKDEaTKwTX5bM44Dj4/gviz/tq?sheet=' 
+				   + sheetName + '&headers=1&tq=' + queryString);
+	       query.send(responseHandler);
+	}
+
+
+//Defining the Response Handler for Total bed cunts in the year 2017	
+function HomelessTotalResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:1, desc:true});
+
+
+		var options = {
+          region: 'US', // USA
+		  resolution: 'provinces',
+          colorAxis: {colors: ['#fff7bc','#fec44f','#d95f0e']},
+          datalessRegionColor: '#f8bbd0',
+          defaultColor: '#f5f5f5'
+		  };
+		 //Making Use of the Geo Map 
+        var chart = new google.visualization.GeoChart(
+		document.getElementById('Homelesscount2018_div'));
+		chart.draw(data, options);
+		
+	}
+	
+			
+		  </script>
+	</head>
+
+<body>
+      <div id="header">
+         <div id="logo">
+            <div id="logo_text">
+             <h1>Analysis of</br>Overall Homeless</h1>
+            </div> <!-- logo_text -->
+         </div><!-- logo -->
+         <div id="menubar">
+            <ul id="menu">
+			   <li><a href="index.html">Home</a></li>
+               <li class="selected"><a href="Overall Homeless.html">Overall Homeless</a></li>
+               <li><a href="Homeless Individuals.html">Homeless Individuals</a></li>
+               <li><a href="Homeless Veterans.html">Homeless Veterans</a></li>
+               
+            </ul><!-- menu -->
+         </div><!-- menubar -->
+      </div><!-- header -->
+	  
+	      </p>&nbsp;</p>
+
+    <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+                  <h3>Overall Homeless in United States</h3>
+                  California and New York had the largest numbers of people experiencing homelessness and high rates of homelessness, at 129972 and 91897. U.S. Virgin Islands and North Dakota have least rates of homelessness, at 486 and 542 </a>
+				 
+               </div>
+            </div>
+        </div>
+        </p>
+
+<h2> <center> Homelessness by state for the year 2018 </center>  </h2>
+
+
+<center><div id="Homelesscount2018_div" style="width: 900px; height: 500px"></div></center>
+
+<br></br>
+
+<table><tr>
+<td><h2><left> <a href="Module 2 Medicare Claims.html">Module 2 - Medicare and Prescription Analysis</a> </left> </h2></td>
+
+<td><h2><right> &emsp; &emsp; &emsp; &emsp; &emsp;&emsp;<a href="Module 3 Correlation.html">Module 3 - Factors affecting Opioids usage and related Deaths</a> </right></h2></td>
+</tr></table>
+
+<!-- External JS libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/d3-tip.js"></script>
+<!-- Custom JS -->
+<script src="js/main.js"></script>
+
+</body>
+</html>

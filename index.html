@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <title>Homelessness Analysis</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- D3 tip CSS -->
+    <link rel="stylesheet" href="css/d3-tip.css">
+
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/Homemain.css">
+	
+			<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type = "text/javascript">
+	
+//Loading all the chart Libraries
+google.charts.load('current' ,{'packages' : ['corechart']});
+google.charts.load('current', {'packages':['treemap']});
+google.charts.load("current", {packages: ['annotationchart']});
+google.charts.load('current', { 'packages': ['map'] });
+google.charts.load('current', {packages: ['table']});
+google.charts.setOnLoadCallback(DrawingSheets);
+	
+	
+//Function where in all the responseHandlers are declared
+//A 'Response Handler' is the closure that is executed to parse the HTTP response that is returned from the server.	
+	
+	
+	function DrawingSheets() {
+	
+	drawSheetName('2018','SELECT A,C',
+	                 HomelessTotalResponseHandler);		   //Response Handler to get Homeless
+	  
+}
+
+
+//Making use of the google API that is the google docs, linking the sheet to access the data
+function drawSheetName(sheetName, query, responseHandler) {
+	var queryString = encodeURIComponent(query);
+	var query = new google.visualization.Query(
+          
+ 		  'https://docs.google.com/spreadsheets/d/1K3wXRgqvOOe31MgF4Yl-6Y5OAwKDEaTKwTX5bM44Dj4/gviz/tq?sheet=' 
+				   + sheetName + '&headers=1&tq=' + queryString);
+	       query.send(responseHandler);
+	}
+
+
+//Defining the Response Handler for Total bed cunts in the year 2017	
+function HomelessTotalResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:1, desc:true});
+
+
+		var options = {
+          region: 'US', // USA
+		  resolution: 'provinces',
+          colorAxis: {colors: ['#fcf3cf','#f0b27a','#f9e79f']},
+          datalessRegionColor: '#f8bbd0',
+          defaultColor: '#f5f5f5'
+		  };
+		 //Making Use of the Geo Map 
+        var chart = new google.visualization.GeoChart(
+		document.getElementById('Homelesscount2018_div'));
+		chart.draw(data, options);
+		
+	}
+	
+			
+		  </script>
+	
+</head>
+
+<body>
+      <div id="header">
+         <div id="logo">
+            <div id="logo_text">
+            <h1>Analysis of Homelessness</br> in the United States</h1>
+            </div> <!-- logo_text -->
+         </div><!-- logo -->
+         <div id="menubar">
+            <ul id="menu">
+               <li class="selected"><a href="index.html">Home</a></li>
+               <li><a href="Homeless Youth.html">Homeless Youth</a></li>
+               <li><a href="Chronically Homeless.html">Chronically Homeless</a></li>
+               <li><a href="Homeless Veterans.html">Homeless Veterans</a></li>
+            </ul><!-- menu -->
+         </div><!-- menubar -->
+      </div><!-- header -->
+
+    </p>&nbsp;</p>
+
+    <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+                  <h3>Introduction</h3>
+                  According to the U.S. Department of Housing and Urban Development (HUD), there were roughly 554,000 homeless people living somewhere in the United States on a given night last year. A total of 193,000 of those people were "unsheltered," meaning that they were living on the streets and had no access to emergency shelters, transitional housing, or Safe Havens. Despite a booming stock market and strong economic growth, a large swathe of America is still struggling to make ends meet.. <br> <a href="https://www.hudexchange.info/resource/5783/2018-ahar-part-1-pit-estimates-of-homelessness-in-the-us/">https://www.hudexchange.info/resource/5783/2018-ahar-part-1-pit-estimates-of-homelessness-in-the-us/</a>
+				 
+               </div>
+            </div>
+        </div>
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+                  <h3>High-level View of the Data</h3>
+                  Before going into the analysis, let us take a glance at some of the high level metrics of this dataset.<br>
+First, let us look at Total Homeless Count in United States for latest five years 2014-2018:
+
+</p>&nbsp;</p>
+               </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9" id="pie-chart-area" class="center-block"></div>  
+        </div>
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+Next, we can see the distribution of Homeless count in US by Category.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+               </p>&nbsp;</p>
+               </p>&nbsp;</p>
+               <select class="form-control genderSelect" >
+                  <option value="Overall" selected>Overall</option>
+				  <option value="Individuals">Individuals</option>
+				  <option value="HM-in-Families">HM-in-Families</option>
+				  <option value="Chronically-HM">Chronically-HM</option>
+                  <option value="Veterans">Veterans</option>
+                  <option value="Youth">Youth</option>
+               </select>
+            </div>
+            <div class="col-md-9" id="chart-area" class="center-block"></div>  
+        </div>
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+
+               </p>&nbsp;</p>
+Finally, We look at top 10 States that have highest Homeless counts.
+               </p>&nbsp;</p>
+
+               </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+               </p>&nbsp;</p>
+               </p>&nbsp;</p>
+               <select class="form-control genderSelect-age" >
+                  <option value="all" selected>2018</option>
+               </select>
+            </div>
+            <div class="col-md-9" id="mothers-age-area" class="center-block"></div>  
+        </div>
+    </div> <!-- close of container -->
+
+              </p>&nbsp;</p>	
+	<h2> <center> Homelessness by state for the year 2018 </center>  </h2>
+                </p>&nbsp;</p>
+
+<center><div id="Homelesscount2018_div" style="width: 900px; height: 500px"></div></center>
+
+<br></br>
+<br></br>
+
+</tr></table>
+<h3><center> Tableau Link showing Homeless Summary </center> </h3>	
+<table><tr>
+<p style="font-family:verdana;"> <br> <a href="https://public.tableau.com/profile/srilatha.lakka#!/vizhome/HomelessSummary_15568097491830/Dashboard2/">https://public.tableau.com/profile/srilatha.lakka#!/vizhome/HomelessSummary_15568097491830/Dashboard2/</a></p>
+</tr></table>
+
+<!-- External JS libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/d3-tip.js"></script>
+<!-- Custom JS -->
+<script src="js/main.js"></script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

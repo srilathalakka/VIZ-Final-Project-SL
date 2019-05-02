@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="">
+     <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- D3 tip CSS -->
+    <link rel="stylesheet" href="css/d3-tip.css">
+
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/veterans.css">
+		<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type = "text/javascript">
+	
+//Loading all the chart Libraries
+google.charts.load('current' ,{'packages' : ['corechart']});
+google.charts.load('current', {'packages':['treemap']});
+google.charts.load("current", {packages: ['annotationchart']});
+google.charts.load('current', { 'packages': ['map'] });
+google.charts.load('current', {packages: ['table']});
+google.charts.setOnLoadCallback(DrawingSheets);
+	
+	
+//Function where in all the responseHandlers are declared
+//A 'Response Handler' is the closure that is executed to parse the HTTP response that is returned from the server.	
+	
+	
+	function DrawingSheets() {
+	
+	drawSheetName('2018','SELECT A,C',
+	                 GenderTotalResponseHandler);		   //Response Handler to get the Death toll by Gender
+	  
+}
+
+
+//Making use of the google API that is the google docs, linking the sheet to access the data
+function drawSheetName(sheetName, query, responseHandler) {
+	var queryString = encodeURIComponent(query);
+	var query = new google.visualization.Query(
+	           
+            /*  'https://docs.google.com/spreadsheets/d/11jp5qXOGHrtzzBXLGimdDc48rXiT_P76x1ubfp3epe4/gviz/tq?sheet=' */
+			  'https://docs.google.com/spreadsheets/d/1K3wXRgqvOOe31MgF4Yl-6Y5OAwKDEaTKwTX5bM44Dj4/gviz/tq?sheet=' 
+				   + sheetName + '&headers=1&tq=' + queryString);
+	       query.send(responseHandler);
+	}
+
+
+//Defining the Response Handler for Total bed cunts in the year 2017	
+function GenderTotalResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:1, desc:true});
+
+
+		var options = {
+          region: 'US', // USA
+		  resolution: 'provinces',
+          colorAxis: {colors: ['#fff7bc','#fec44f','#d95f0e']},
+          datalessRegionColor: '#f8bbd0',
+          defaultColor: '#f5f5f5'
+		  };
+		 //Making Use of the Geo Map 
+        var chart = new google.visualization.GeoChart(
+		document.getElementById('bedcount2018_div'));
+		chart.draw(data, options);
+		
+	}
+	
+			
+		  </script>
+	</head>
+<body>
+      <div id="header">
+         <div id="logo">
+            <div id="logo_text">
+             <h1>Analysis of Veterans</br>Homelessness</h1>
+            </div> <!-- logo_text -->
+         </div><!-- logo -->
+         <div id="menubar">
+            <ul id="menu">
+			   <li><a href="index.html">Home</a></li>
+               <li><a href="Homeless Youth.html">Homeless Youth</a></li>
+               <li><a href="Chronically Homeless.html">Chronically Homeless</a></li>
+			   <li class="selected"><a href="Homeless Veterans.html">Homeless Veterans</a></li>
+               
+            </ul><!-- menu -->
+         </div><!-- menubar -->
+      </div><!-- header -->
+
+     <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+			     <h3>Introduction</h3>
+                  The U.S. Department of Veterans Affairs (VA) states that the nation’s homeless veterans are predominantly male, with roughly 9% being female. The majority are single; live in urban areas; and suffer from mental illness, alcohol and/or substance abuse, or co-occurring disorders. About 11% of the adult homeless population are veterans.
+Roughly 45% of all homeless veterans are African American or Hispanic, despite only accounting for 10.4% and 3.4% of the U.S. veteran population, respectively.
+Homeless veterans are younger on average than the total veteran population. Approximately 9% are between the ages of 18 and 30, and 41% are between the ages of 31 and 50. Conversely, only 5% of all veterans are between the ages of 18 and 30, and less than 23% are between 31 and 50..<br>
+               </div>
+            </div>
+        </div>
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+                  <h3>High-level View of the Data</h3>
+                  Lets look at the count of Unsheltered Homeless Veterans and Sheltered Homeless Veterans <br>
+				  
+			 </div>
+            </div>
+        </div>
+</p>&nbsp;</p>
+               </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-9" id="vetpie-chart-area" class="center-block"></div>  
+        </div>
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+
+<br></br>
+
+</tr></table>
+<h2><left> Tableau Link showing Veterans Summary </center> </h2>	
+<table><tr>
+<p style="font-family:verdana;"> <br> <a href="https://public.tableau.com/profile/srilatha.lakka#!/vizhome/HomelessSummary_15568097491830/Dashboard1/">https://public.tableau.com/profile/srilatha.lakka#!/vizhome/HomelessSummary_15568097491830/Dashboard1/</a></p>
+</tr></table>
+
+<!-- External JS libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/d3-tip.js"></script>
+<!-- Custom JS -->
+<script src="js/main.js"></script>
+
+</body>
+</html>

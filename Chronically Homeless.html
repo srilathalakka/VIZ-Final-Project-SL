@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="">
+     <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- D3 tip CSS -->
+    <link rel="stylesheet" href="css/d3-tip.css">
+
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/Individuals.css">
+		<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type = "text/javascript">
+	
+//Loading all the chart Libraries
+google.charts.load('current' ,{'packages' : ['corechart']});
+google.charts.load('current', {'packages':['treemap']});
+google.charts.load("current", {packages: ['annotationchart']});
+google.charts.load('current', { 'packages': ['map'] });
+google.charts.load('current', {packages: ['table']});
+google.charts.setOnLoadCallback(DrawingSheets);
+	
+	
+//Function where in all the responseHandlers are declared
+//A 'Response Handler' is the closure that is executed to parse the HTTP response that is returned from the server.	
+	
+	
+	function DrawingSheets() {
+	
+	drawSheetName('Sheet1','SELECT A,B',
+	                 ChronicTotalResponseHandler);		   //Response Handler to chronically homeless
+	  
+}
+
+
+//Making use of the google API that is the google docs, linking the sheet to access the data
+function drawSheetName(sheetName, query, responseHandler) {
+	var queryString = encodeURIComponent(query);
+	var query = new google.visualization.Query(
+	           
+            /*  'https://docs.google.com/spreadsheets/d/11jp5qXOGHrtzzBXLGimdDc48rXiT_P76x1ubfp3epe4/gviz/tq?sheet=' */
+			  'https://docs.google.com/spreadsheets/d/1_NinQQ9aMrDJjjyQJKcLfF2zjmyyqNg19PZvIvBfBy8/gviz/tq?sheet=' 
+				   + sheetName + '&headers=1&tq=' + queryString);
+	       query.send(responseHandler);
+	}
+
+
+//Defining the Response Handler for the year 2018	
+function ChronicTotalResponseHandler(response) {
+	
+    
+	 var data = response.getDataTable();
+	 data.sort({column:1, desc:true});
+	 
+	 var options ={
+	 title:'Top states',
+	   vAxis: {
+	   
+	   title: 'States'},
+	  hAxis: {
+	 // viewWindow :{maxValue : 3, minValue:0},
+	  title:  'Homeless Counts'},
+	 height: 600,
+	 width :900,
+	 colors: ['#e41a1c']
+	 
+	 };
+	
+	 
+	 var chart = new google.visualization.BarChart(
+	             document.getElementById('topchronic_div'));
+				 
+	chart.draw(data, options);
+	}
+	
+			
+		  </script>
+	</head>
+<body>
+      <div id="header">
+         <div id="logo">
+            <div id="logo_text">
+             <h1>Analysis of Chronically </br>Homelessness</h1>
+            </div> <!-- logo_text -->
+         </div><!-- logo -->
+         <div id="menubar">
+            <ul id="menu">
+			   <li><a href="index.html">Home</a></li>
+			   <li><a href="Homeless Youth.html">Homeless Youth</a></li>
+			   <li class="selected"><a href="Chronically Homeless.html">Chronically Homeless</a></li>
+               <li><a href="Homeless Veterans.html">Homeless Veterans</a></li>
+               
+            </ul><!-- menu -->
+         </div><!-- menubar -->
+      </div><!-- header -->
+
+     <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+			     <h3>Chronically Homelessness</h3>
+                  Chronic homelessness is used to describe people who have experienced homelessness for at least a year — or repeatedly — while struggling with a disabling condition such as a serious mental illness, substance use disorder, or physical disability. 65 percent of chronically homeless individuals were living on the street, in a car, park, or other location not meant for human habitation. People experiencing chronic homelessness typically have complex and long-term health conditions, such as mental illness, substance use disorders, physical disabilities, or other medical conditions. Once they become homeless — regardless of what immediately caused them to lose their housing ← it is difficult for them to get back into housing and they can face long or repeated episodes of homelessness.<br>
+               </div>
+            </div>
+        </div>
+        </p>
+		
+<br></br>
+<br></br>
+<h3><center> Top States with Chronically Homelessness </center></h3>
+<table><tr>
+<td><div id="topchronic_div" style="width: 700px; height: 500px"></div></td>
+<</tr></table>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+
+</tr></table>
+<h3><center> Tableau Link showing Homeless Summary </center> </h3>	
+<table><tr>
+<p style="font-family:verdana;"> <br> <a href="https://public.tableau.com/profile/srilatha.lakka#!/vizhome/HomelessSummary_15568097491830/Dashboard3/">https://public.tableau.com/profile/srilatha.lakka#!/vizhome/HomelessSummary_15568097491830/Dashboard3/</a></p>
+</tr></table>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="">
+     <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- D3 tip CSS -->
+    <link rel="stylesheet" href="css/d3-tip.css">
+
+    <!-- Custom styling -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/Individuals.css">
+		<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type = "text/javascript">
+	
+//Loading all the chart Libraries
+google.charts.load('current' ,{'packages' : ['corechart']});
+google.charts.load('current', {'packages':['treemap']});
+google.charts.load("current", {packages: ['annotationchart']});
+google.charts.load('current', { 'packages': ['map'] });
+google.charts.load('current', {packages: ['table']});
+google.charts.setOnLoadCallback(DrawingSheets);
+	
+	
+//Function where in all the responseHandlers are declared
+//A 'Response Handler' is the closure that is executed to parse the HTTP response that is returned from the server.	
+	
+	
+	function DrawingSheets() {
+	
+	drawSheetName('2018','SELECT A,C',
+	                 GenderTotalResponseHandler);		   //Response Handler to get the Death toll by Gender
+	  
+}
+
+
+//Making use of the google API that is the google docs, linking the sheet to access the data
+function drawSheetName(sheetName, query, responseHandler) {
+	var queryString = encodeURIComponent(query);
+	var query = new google.visualization.Query(
+	           
+            /*  'https://docs.google.com/spreadsheets/d/11jp5qXOGHrtzzBXLGimdDc48rXiT_P76x1ubfp3epe4/gviz/tq?sheet=' */
+			  'https://docs.google.com/spreadsheets/d/1K3wXRgqvOOe31MgF4Yl-6Y5OAwKDEaTKwTX5bM44Dj4/gviz/tq?sheet=' 
+				   + sheetName + '&headers=1&tq=' + queryString);
+	       query.send(responseHandler);
+	}
+
+
+//Defining the Response Handler for Total bed cunts in the year 2017	
+function GenderTotalResponseHandler(response) {
+		   var data = response.getDataTable();
+           data.sort({column:1, desc:true});
+
+
+		var options = {
+          region: 'US', // USA
+		  resolution: 'provinces',
+          colorAxis: {colors: ['#fff7bc','#fec44f','#d95f0e']},
+          datalessRegionColor: '#f8bbd0',
+          defaultColor: '#f5f5f5'
+		  };
+		 //Making Use of the Geo Map 
+        var chart = new google.visualization.GeoChart(
+		document.getElementById('bedcount2018_div'));
+		chart.draw(data, options);
+		
+	}
+	
+			
+		  </script>
+	</head>
+<body>
+      <div id="header">
+         <div id="logo">
+            <div id="logo_text">
+             <h1>Analysis of Individuals</br>Homelessness</h1>
+            </div> <!-- logo_text -->
+         </div><!-- logo -->
+         <div id="menubar">
+            <ul id="menu">
+			   <li><a href="index.html">Home</a></li>
+               <li><a href="Homeless Individuals.html">Chronically Homeless</a></li>
+			   <li class="selected"><a href="Homeless Youth.html">Homeless Youth</a></li>
+               <li><a href="Homeless Veterans.html">Homeless Veterans</a></li>
+               
+            </ul><!-- menu -->
+         </div><!-- menubar -->
+      </div><!-- header -->
+
+     <!-- Bootstrap grid setup -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+			     <h3>Introduction</h3>
+                  HUD found 549,928 individuals to be homeless on a single night in January 2016. Most homeless persons (65%) are individuals while 35% of homeless persons are in family households. The number of families experiencing homelessness has increased significantly from past years<br>
+               </div>
+            </div>
+        </div>
+        </p>
+        <div class="row">
+            <div class="col-md-12">
+               <div id="content">
+                  <h3>High-level View of the Data</h3>
+                  The following chart shows the trend of Military spending in USA seems to be gradually increased from 2010 to 2012 from 724 billions to 740 billions <br> 
+				  and then started to decrease from 2013 to 2015. China seems to be in second place in military spending and Italy is the least spending country in <br>
+				  terms of military.<br>
+				  
+			 </div>
+            </div>
+        </div>
+	<table> <tr>
+	<h3> Requirement 1: The Military Spending Of The Top 10 Nations </h3>
+	<br></br>
+	<b>  Column Chart Representation of Top 10 Military Spending Countries from 2010-2015</b>
+	<td><div id ="TopMilitary_div" style="width:800px; height:600px"></div></td>
+	</tr> </table>
+	
+	<table> <tr>
+		<b> Stacked Chart Representation of of Top 10 Military Spending Countries from 2010-2015</b>
+		 <td><div  id ="TopMilitaryStack_div" style="width:900px; height:600px"></div></td>
+	 </tr></table>
+	
+	<table><tr>
+	<b> Geo Map representation of Top 10 Military spending Countries for the year 2015</b>
+	<td> <div  id ="MilitaryGeo_div" style="width:900px; height:500px"></div> </td>
+	</tr> </table>
+	
+	<table><tr>
+	<b> Pie Chart Representation of Top 10 Military Spending Countries for the year 2015</b>
+	  <td> <div  id ="MilitaryPie_div" style="width:900px; height:500px"></div> </td>
+	</tr> </table>
+	
+	<table> <tr>
+	 <h3>Requirement 6: Compare the per person Military spending to per person GDP</h3>
+	 <td>  <div id="PercapitaMilitary10Gdp_div"  style="width:1000px; height:500px"></div></td>
+	</tr> 
+	</table>
+
+</body>
+</html>
